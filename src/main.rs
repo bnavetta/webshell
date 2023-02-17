@@ -226,10 +226,11 @@ async fn handle_socket(socket: WebSocket, state: &AppState) -> miette::Result<()
 /// Handler to return the current server status
 #[tracing::instrument]
 async fn handle_info(State(state): State<Arc<AppState>>) -> String {
+    let formatted_shell = state.shell.to_string_lossy();
     format!(
-        "There are {} terminals running {:?}",
+        "There are {} terminals running {}\n",
         state.active_terminals.load(Ordering::Relaxed),
-        state.shell
+        formatted_shell
     )
 }
 
