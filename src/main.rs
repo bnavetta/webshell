@@ -16,7 +16,7 @@ use axum::{
         State, WebSocketUpgrade,
     },
     http::StatusCode,
-    response::{IntoResponse, Response},
+    response::{Html, IntoResponse, Response},
     routing::{get, get_service},
     Router, Server,
 };
@@ -228,7 +228,7 @@ async fn handle_socket(socket: WebSocket, state: &AppState) -> miette::Result<()
 async fn handle_info(State(state): State<Arc<AppState>>) -> Html<String> {
     let formatted_shell = state.shell.to_string_lossy();
     Html(format!(
-        "<p>There are <strong>{}</strong> terminals running {}</p>\n",
+        "<p>There are <strong>{}</strong> terminals running <code>{}</code></p>\n",
         state.active_terminals.load(Ordering::Relaxed),
         formatted_shell
     ))
